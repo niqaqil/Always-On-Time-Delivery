@@ -80,7 +80,7 @@ public class InputData {
     }
 
     public static void main(String[] args) {
-        InputData data = new InputData("input.txt");
+        InputData data = new InputData("input1.txt");
         System.out.print(data.getN() + " ");
         System.out.println(data.getC());
         int[][] location = data.getCoordinate();
