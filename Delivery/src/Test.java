@@ -35,6 +35,7 @@ public class Test {
             }
             System.out.printf("|\n");
         }
+        System.out.println("Testing");
     }
     
 }
