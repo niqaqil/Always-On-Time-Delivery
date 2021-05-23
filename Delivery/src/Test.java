@@ -1,41 +1,50 @@
-
+import java.util.ArrayList;
 public class Test {
     
     public static void main(String[] args) {
 
-        InputData data = new InputData("input1.txt");
-        System.out.print(data.getN() + " ");
-        System.out.println(data.getC());
-        int[][] location = data.getCoordinate();
-        int[] demand = data.getDemand();
-        for (int i = 0; i < location.length; i++) {
-            for (int j = 0; j < location[i].length; j++)
-                System.out.print(location[i][j] + " ");
-            System.out.println("" + demand[i]);
+        String s = "input.txt";
+        InputData data = new InputData(s);
+        Customer[] cus = new Customer[data.getN()];
+        for (int i = 0; i < cus.length; i++) {
+            cus[i] = new Customer(i, s);
         }
 
-        System.out.println("\nEuclidean distance travelled by the vehicle....");
-        double[][] matrix = new double[data.getN()][data.getN()];
-        for (int i = 0; i < location.length; i++) {
-            for (int j = 1; j < location.length; j++) {
-                if (i >= j)
-                    continue;
-                double sum = Math.pow(location[i][0]-location[j][0],2) + Math.pow(location[i][1]-location[j][1],2);
-                double num = Math.sqrt(sum);
-                matrix[i][j] = num;
-                matrix[j][i] = num;
-                System.out.println("Cost " + i + " to " + j + ": " + num);
+        System.out.println("Demand for each location");
+        for (int i = 0; i < cus.length; i++) {
+            System.out.println("Location " + i + ": " + cus[i].getDemand());
+        }
+
+        Vehicle car = new Vehicle(data.getC());
+        System.out.println("Capacity of car: " + car.getCapacity());
+        System.out.println();
+        double[][] cost = new double[cus.length][cus.length];
+        for (int i = 0; i < cost.length; i++) {
+            for (int j = 0; j < cost[i].length; j++) {
+                cost[i][j] = Customer.cost(cus[i].getCoordinate(), cus[j].getCoordinate());
             }
         }
-        System.out.println();
-        for (int i = 0; i < matrix.length; i++) {
+        Customer.setCost(cost);
+        //System.out.println("Cost from 0 to 1: " + Customer.cost(cus[0].getCoordinate(), cus[1].getCoordinate()));
+
+        /*for (int i = 0; i < cost.length; i++) {
             System.out.printf("%d |\t", i);
-            for (int j = 0; j < matrix[i].length; j++) {
-                System.out.printf("%.2f \t", matrix[i][j]);
+            for (int j = 0; j < cost[i].length; j++) {
+                System.out.printf("%.2f \t", cost[i][j]);
             }
             System.out.printf("|\n");
+        }*/
+
+        ArrayList<Integer> visited = new ArrayList<>();
+        double totalCost = 0;
+        System.out.println("\nGreedy Simulation");
+        int count = 1;
+        while (visited.size() != cus.length) {
+            System.out.println("Vehicle " + count);
+            totalCost += car.GreedySearch(cus, car, visited);
+            count++;
         }
-        System.out.println("Testing");
+        System.out.println("Tour Cost = " + totalCost);
     }
     
 }
