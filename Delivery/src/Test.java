@@ -1,7 +1,7 @@
 public class Test {
 
     public static void main(String[] args) {
-        String s = "input.txt";
+        String s = "input1.txt";
         InputData data = new InputData(s);
         Customer[] cus = new Customer[data.getN()];
         for (int i = 0; i < cus.length; i++) {
