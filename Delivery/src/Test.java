@@ -1,8 +1,6 @@
-import java.util.ArrayList;
 public class Test {
-    
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
         String s = "input.txt";
         InputData data = new InputData(s);
         Customer[] cus = new Customer[data.getN()];
@@ -34,17 +32,13 @@ public class Test {
             }
             System.out.printf("|\n");
         }*/
-
-        ArrayList<Integer> visited = new ArrayList<>();
-        double totalCost = 0;
-        System.out.println("\nGreedy Simulation");
-        int count = 1;
-        while (visited.size() != cus.length) {
-            System.out.println("Vehicle " + count);
-            totalCost += car.GreedySearch(cus, car, visited);
-            count++;
-        }
-        System.out.println("Tour Cost = " + totalCost);
+        int totalVehicle = car.greedySearch(cus, car);
+        System.out.println("Greedy Simulation");
+        car.printSimulation();
+        /*for (int i = 0; i < Vehicle.carsRoute.size(); i++) {
+            for (int j = 0; j < Vehicle.carsRoute.get(i).length; j++)
+                System.out.print(Vehicle.carsRoute.get(i)[j] + " ");
+            System.out.println();
+        }*/
     }
-    
 }
