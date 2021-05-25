@@ -1,16 +1,24 @@
 public class Test {
 
     public static void main(String[] args) {
-        String s = "input1.txt";
+        String s = "input.txt";
         InputData data = new InputData(s);
+        int[][] loc = data.getCoordinate(); // coordinate for each customer include depot
+        int[] demand = data.getDemand();
         Customer[] cus = new Customer[data.getN()];
+         MyCustomer<Integer, Integer> customer = new MyCustomer<>(); // class graph
         for (int i = 0; i < cus.length; i++) {
             cus[i] = new Customer(i, s);
+            customer.addCustomer(i, loc[i][0], loc[i][1], demand[i]);
         }
-
-        System.out.println("Demand for each location");
-        for (int i = 0; i < cus.length; i++) {
-            System.out.println("Location " + i + ": " + cus[i].getDemand());
+        
+        System.out.println("Number of Customer: " + (customer.getSize()-1));
+        System.out.println("Customer and their demand");
+        for (int i = 0; i < customer.getSize(); i++) {
+            if (i == 0)
+                System.out.println("Depot" + customer.getCoordinate(i) + ": " + customer.getDemand(i));
+            else
+                System.out.println("Customer " + i + customer.getCoordinate(i) + ": "  + customer.getDemand(i));
         }
 
         Vehicle car = new Vehicle(data.getC());
@@ -20,8 +28,11 @@ public class Test {
         for (int i = 0; i < cost.length; i++) {
             for (int j = 0; j < cost[i].length; j++) {
                 cost[i][j] = Customer.cost(cus[i].getCoordinate(), cus[j].getCoordinate());
+                customer.addEdge(i, j, cost[i][j]);
             }
         }
+        customer.printEdges(); // print edges for each location
+        System.out.println("");
         Customer.setCost(cost);
         //System.out.println("Cost from 0 to 1: " + Customer.cost(cus[0].getCoordinate(), cus[1].getCoordinate()));
 
