@@ -34,22 +34,18 @@ public class Test {
         customer.printEdges(); // print edges for each location
         System.out.println("");
         Customer.setCost(cost);
-        //System.out.println("Cost from 0 to 1: " + Customer.cost(cus[0].getCoordinate(), cus[1].getCoordinate()));
+       
 
-        /*for (int i = 0; i < cost.length; i++) {
+        for (int i = 0; i < cost.length; i++) {
             System.out.printf("%d |\t", i);
             for (int j = 0; j < cost[i].length; j++) {
                 System.out.printf("%.2f \t", cost[i][j]);
             }
             System.out.printf("|\n");
-        }*/
-        int totalVehicle = car.greedySearch(cus, car);
+        }
+        car.greedySearch(customer, car);
         System.out.println("Greedy Simulation");
         car.printSimulation();
-        /*for (int i = 0; i < Vehicle.carsRoute.size(); i++) {
-            for (int j = 0; j < Vehicle.carsRoute.get(i).length; j++)
-                System.out.print(Vehicle.carsRoute.get(i)[j] + " ");
-            System.out.println();
-        }*/
+       
     }
 }
