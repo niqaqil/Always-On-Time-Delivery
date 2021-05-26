@@ -1,7 +1,7 @@
 public class Test {
 
     public static void main(String[] args) {
-        String s = "input.txt";
+        String s = "n7-c27.txt";
         InputData data = new InputData(s);
         int[][] loc = data.getCoordinate(); // coordinate for each customer include depot
         int[] demand = data.getDemand();
@@ -22,7 +22,7 @@ public class Test {
         }
 
         Vehicle car = new Vehicle(data.getC());
-        System.out.println("Capacity of car: " + car.getCapacity());
+        System.out.println("Capacity of each vehicles: " + car.getCapacity());
         System.out.println();
         double[][] cost = new double[cus.length][cus.length];
         for (int i = 0; i < cost.length; i++) {
