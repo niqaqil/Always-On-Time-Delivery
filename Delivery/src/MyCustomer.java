@@ -131,7 +131,7 @@ public class MyCustomer<T extends Comparable<T>, N extends Comparable<N>> {
         return false;
     }
 
-    public T getCustomer(int pos) {
+    public T getCustomer(int pos) {  // return customer info
         if (pos > size - 1 || pos < 0)
             return null;
         Vertex<T, N> temp = head;
@@ -140,7 +140,7 @@ public class MyCustomer<T extends Comparable<T>, N extends Comparable<N>> {
         return temp.vertexInfo;
     }
 
-    public String getCoordinate(int pos) {
+    public String getCoordinate(int pos) {  // return a string of coordinate (x, y)
         if (pos > size - 1 || pos < 0)
             return null;
         Vertex<T, N> temp = head;
@@ -149,13 +149,24 @@ public class MyCustomer<T extends Comparable<T>, N extends Comparable<N>> {
         return " (" + temp.x + ", " + temp.y + ") ";
     }
 
-    public int getDemand(int pos) {
+    public int getDemand(int pos) {  // return demand at each location
         if (pos > size - 1 || pos < 0)
             return 0;
         Vertex<T, N> temp = head;
         for (int i = 0; i < pos; i++)
             temp = temp.nextVertex;
         return temp.demand;
+    }
+    
+    public double calCost(int source, int dest) {  // calculate cost from source to destination
+        Vertex<T, N> start = head;
+        Vertex<T, N> end = head;
+        for (int i = 0; i < source; i++)
+            start = start.nextVertex;
+        for (int i = 0; i < dest; i++)
+            end = end.nextVertex;
+        double sum = Math.pow(start.x - end.x, 2) + Math.pow(start.y - end.y, 2);
+        return Math.sqrt(sum);
     }
 
     public void printEdges() {
