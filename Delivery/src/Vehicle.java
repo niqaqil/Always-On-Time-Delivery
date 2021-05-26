@@ -1,10 +1,12 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Vehicle {
-    private int capacity;
+    protected int capacity;
     protected static ArrayList<int[]> greedyRoute; // save arrays of routes for each car
     protected static ArrayList<Double> cost; // save cost for each car
     protected static ArrayList<Integer> capacities; // save capacities for each car
+    protected LinkedList<Customer> bfsPath;
     private double costs; // Tour cost
 
     public Vehicle(int capacity) {
@@ -15,12 +17,18 @@ public class Vehicle {
         costs = 0;
     }
 
+    public Vehicle(LinkedList<Customer> bfsPath, int capacity, double costs) {
+        this.capacity = capacity;
+        this.bfsPath = bfsPath;
+        this.costs = costs;
+    }
+
     public int getCapacity() {
         return capacity;
     }
 
     public static void addGreedyRoute(int[] r) {
-       greedyRoute.add(r);
+        greedyRoute.add(r);
     }
 
     public double getCost() {
@@ -31,62 +39,57 @@ public class Vehicle {
         this.costs = cost;
     }
 
+    public boolean allVisited(boolean[] visited) {
+        for (boolean b : visited)
+            if (!b) {
+                return false;
+            }
+        return true;
+    }
 
-
-    public int greedySearch(Customer[] cus, Vehicle car) {
+    public void greedySearch(MyCustomer<Integer, Integer> cus, Vehicle car) {
         ArrayList<Integer> visited = new ArrayList<>();
         double totalCost = 0;
-        //System.out.println("Greedy Simulation");
         int count = 1;
-        while (visited.size() != cus.length) {
-            //System.out.println("Vehicle " + count);
+        while (visited.size() != cus.getSize()) {
             double costRoute = car.vehicleRoute(cus, car, visited);
             cost.add(costRoute);
             totalCost += costRoute;
             count++;
         }
-        //System.out.println("Tour Cost = " + totalCost);
         setCost(totalCost);
-        return count;
     }
 
-    public double vehicleRoute(Customer[] cus, Vehicle car, ArrayList<Integer> visitVertex) {
+    public double vehicleRoute(MyCustomer<Integer, Integer> cus, Vehicle car, ArrayList<Integer> visitVertex) {
         int totalDemand = 0;
-        double[][] cost = Customer.getCost();
         double totalCost = 0;
-        boolean[] visited = new boolean[cus.length];
+        boolean[] visited = new boolean[cus.getSize()];
         int parent = 0;
-        visited[parent] = true;
-        for (Integer vertex : visitVertex) visited[vertex] = true;
         if (!visitVertex.contains(parent))
             visitVertex.add(parent);
+        visited[parent] = true;
+        for (Integer vertex : visitVertex) visited[vertex] = true;
         ArrayList<Integer> route = new ArrayList<Integer>();
         route.add(parent);
-        /*for (int i = 0; i < visited.length; i++)
-            System.out.print(visited[i] + " ");*/
         int nextVertex = -1;
         while (!allVisited(visited) && totalDemand <= car.getCapacity()) {
-            nextVertex = shortPath(cost, parent, visited);
+            nextVertex = shortPath(parent, cus, visited);
             visited[nextVertex] = true;
-            while (totalDemand + cus[nextVertex].getDemand() > car.getCapacity()) {
-                nextVertex = shortPath(cost, parent, visited);
+            while (totalDemand + cus.getDemand(nextVertex) > car.getCapacity()) {
+                nextVertex = shortPath(parent, cus, visited);
                 visited[nextVertex] = true;
             }
             if (!visitVertex.contains(nextVertex))
                 visitVertex.add(nextVertex);
             route.add(nextVertex);
-            totalDemand += cus[nextVertex].getDemand();
-            totalCost += cost[parent][nextVertex];
+            totalDemand += cus.getDemand(nextVertex);
+            totalCost += cus.getEdgeCost(parent, nextVertex);
             parent = nextVertex;
         }
-
-        if (visitVertex.size() == cus.length) {
-            totalCost += cost[nextVertex][0];
+        if (visitVertex.size() == cus.getSize() || totalDemand == car.getCapacity()) {
+            totalCost += cus.getEdgeCost(nextVertex, 0);
             route.add(0);
         }
-        //System.out.println();
-        //System.out.println("Capacity: " + totalDemand);
-        //System.out.println("Cost: " + totalCost);
         int[] vehicleRoute = new int[route.size()];
         for (int i = 0; i < route.size(); i++) {
             vehicleRoute[i] = route.get(i);
@@ -96,35 +99,27 @@ public class Vehicle {
         return totalCost;
     }
 
-    public int shortPath(double[][] cost, int parent, boolean[] visit) {
+    private int shortPath(int parent, MyCustomer<Integer, Integer> cus, boolean[] visit) {
         double min = Integer.MAX_VALUE;
         int index = 0;
-        for (int i = 0; i < cost[parent].length; i++) {
+        for (int i = 0; i < cus.getSize(); i++) {
             if (i != parent)
-                if (cost[parent][i] < min && !visit[i]) {
-                    min = cost[parent][i];
+                if (cus.getEdgeCost(parent, i) < min && !visit[i]) {
+                    min = cus.getEdgeCost(parent, i);
                     index = i;
                 }
         }
         return index;
     }
 
-    public boolean allVisited(boolean[] visited) {
-        for (boolean b : visited)
-            if (!b) {
-                return false;
-            }
-        return true;
-    }
-
     public void printSimulation() {
         System.out.println("Tour");
         System.out.println("Tour Cost: " + costs);
         for (int i = 0; i < greedyRoute.size(); i++) {
-            System.out.println("Vehicle " + i+1);
+            System.out.println("Vehicle " + (i + 1));
             for (int j = 0; j < greedyRoute.get(i).length; j++) {
                 System.out.print(greedyRoute.get(i)[j]);
-                if (j != greedyRoute.get(i).length-1)
+                if (j != greedyRoute.get(i).length - 1)
                     System.out.print(" -> ");
             }
             System.out.println("\nCapacity: " + capacities.get(i));
