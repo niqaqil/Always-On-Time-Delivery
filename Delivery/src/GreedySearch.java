@@ -13,14 +13,6 @@ public class GreedySearch {
         costs = 0;
     }
 
-    public int GRouteSize() {
-        return GRoute.size();
-    }
-
-    public int getCapacity() {
-        return capacity.size();
-    }
-
     private static void addGRoute(int[] r) {
         GRoute.add(r);
     }
@@ -33,15 +25,15 @@ public class GreedySearch {
         costs = c;
     }
 
-    public boolean allVisited(boolean[] visited) {
-        for (boolean b : visited)
-            if (!b) {
+    public boolean allVisited(boolean[] visited) {  // check if all places had been visited
+        for (boolean b : visited) 
+            if (!b) {  // if there a place not visited yet, return false
                 return false;
             }
-        return true;
+        return true;  // return true if all places had been visited
     }
 
-    public int shortPath(int parent, MyCustomer<Integer, Integer> cus, boolean[] visit) {
+    public int shortPath(int parent, MyCustomer<Integer, Integer> cus, boolean[] visit) {  // find index of next customer that is the nearest from parent(curent place)
         double min = Integer.MAX_VALUE;
         int index = 0;
         for (int i = 0; i < cus.getSize(); i++) {
@@ -54,7 +46,7 @@ public class GreedySearch {
         return index;
     }
 
-    public double vehicleRoute(MyCustomer<Integer, Integer> cus, Vehicle car, ArrayList<Integer> visitVertex) {
+    public double vehicleRoute(MyCustomer<Integer, Integer> cus, Vehicle car, ArrayList<Integer> visitVertex) {  
         int totalDemand = 0;
         double totalCost = 0;
         boolean[] visited = new boolean[cus.getSize()];
@@ -66,7 +58,7 @@ public class GreedySearch {
         ArrayList<Integer> route = new ArrayList<Integer>();
         route.add(parent);
         int nextVertex = -1;
-        while (!allVisited(visited) && totalDemand <= car.getCapacity()) {
+        while (!allVisited(visited) && totalDemand <= car.getCapacity()) {  // find the shortest path while total demand <= capacity of vehicle
             nextVertex = shortPath(parent, cus, visited);
             visited[nextVertex] = true;
             while (totalDemand + cus.getDemand(nextVertex) > car.getCapacity()) {
@@ -93,7 +85,7 @@ public class GreedySearch {
         return totalCost;
     }
 
-    public void searchRoute(MyCustomer<Integer, Integer> cus, Vehicle car) {
+    public void searchRoute(MyCustomer<Integer, Integer> cus, Vehicle car) {  // compute all total cost of all vehicle that had been used
         ArrayList<Integer> visited = new ArrayList<>();
         double totalCost = 0;
         int count = 1;
@@ -106,7 +98,7 @@ public class GreedySearch {
         setCost(totalCost);
     }
 
-    public void printSimulation() {
+    public void printSimulation() {  // print the simulation of greedy search
         System.out.println("Tour");
         System.out.println("Tour Cost: " + costs);
         for (int i = 0; i < GRoute.size(); i++) {
