@@ -1,7 +1,7 @@
 public class Test {
 
     public static void main(String[] args) {
-        String s = "n7-c27.txt";
+        String s = "input.txt";
         InputData data = new InputData(s);
         int[][] loc = data.getCoordinate(); // coordinate for each customer include depot
         int[] demand = data.getDemand();
@@ -12,7 +12,7 @@ public class Test {
             customer.addCustomer(i, loc[i][0], loc[i][1], demand[i]);
         }
         
-        System.out.println("Number of Customer: " + (customer.getSize()-1));
+        System.out.println("Number of Customer(s): " + (customer.getSize()-1));
         System.out.println("Customer and their demand");
         for (int i = 0; i < customer.getSize(); i++) {
             if (i == 0)
@@ -31,21 +31,22 @@ public class Test {
                 customer.addEdge(i, j, cost[i][j]);
             }
         }
-        customer.printEdges(); // print edges for each location
+        //customer.printEdges(); // print edges for each location
         System.out.println("");
         Customer.setCost(cost);
        
 
-        for (int i = 0; i < cost.length; i++) {
-            System.out.printf("%d |\t", i);
-            for (int j = 0; j < cost[i].length; j++) {
-                System.out.printf("%.2f \t", cost[i][j]);
-            }
-            System.out.printf("|\n");
-        }
-        car.greedySearch(customer, car);
+//        for (int i = 0; i < cost.length; i++) {
+//            System.out.printf("%d |\t", i);
+//            for (int j = 0; j < cost[i].length; j++) {
+//                System.out.printf("%.2f \t", cost[i][j]);
+//            }
+//            System.out.printf("|\n");
+//        }
+        GreedySearch greedy = new GreedySearch();
         System.out.println("Greedy Simulation");
-        car.printSimulation();
+        greedy.searchRoute(customer, car);
+        greedy.printSimulation();
        
     }
 }
