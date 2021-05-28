@@ -1,7 +1,7 @@
 public class Test {
 
     public static void main(String[] args) {
-        String s = "input1.txt";
+        String s = "input.txt";
         InputData data = new InputData(s);
         int[][] loc = data.getCoordinate(); // coordinate for each customer include depot
         int[] demand = data.getDemand();
