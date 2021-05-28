@@ -1,7 +1,7 @@
 public class Test {
 
     public static void main(String[] args) {
-        String s = "input.txt";
+        String s = "input1.txt";
         InputData data = new InputData(s);
         int[][] loc = data.getCoordinate(); // coordinate for each customer include depot
         int[] demand = data.getDemand();
@@ -11,7 +11,7 @@ public class Test {
             cus[i] = new Customer(i, s);
             customer.addCustomer(i, loc[i][0], loc[i][1], demand[i]);
         }
-        
+        System.out.println("Testing branch");
         System.out.println("Number of Customer(s): " + (customer.getSize()-1));
         System.out.println("Customer and their demand");
         for (int i = 0; i < customer.getSize(); i++) {
