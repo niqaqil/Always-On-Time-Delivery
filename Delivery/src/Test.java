@@ -11,7 +11,7 @@ public class Test {
             cus[i] = new Customer(i, s);
             customer.addCustomer(i, loc[i][0], loc[i][1], demand[i]);
         }
-        System.out.println("Testing branch");
+        
         System.out.println("Number of Customer(s): " + (customer.getSize()-1));
         System.out.println("Customer and their demand");
         for (int i = 0; i < customer.getSize(); i++) {
@@ -32,7 +32,6 @@ public class Test {
             }
         }
         //customer.printEdges(); // print edges for each location
-        System.out.println("");
         Customer.setCost(cost);
        
 
