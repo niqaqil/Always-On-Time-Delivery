@@ -1,7 +1,11 @@
+
+
+
 public class Test {
 
     public static void main(String[] args) {
-        String s = "instances\\n10-c43.txt";
+       
+        String s = "instances\\n5-c10.txt";
         InputData data = new InputData(s);
         int[][] loc = data.getCoordinate(); // coordinate for each customer include depot
         int[] demand = data.getDemand();
