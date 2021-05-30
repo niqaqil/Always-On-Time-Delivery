@@ -1,22 +1,41 @@
 
 package GUI;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 
 public class GUIDelivery extends javax.swing.JFrame {
     private JFileChooser file;
     private String s;
+    private MyCustomer<Integer, Integer> cus;
+    private Vehicle car;
+    private int[][] loc;
+    private int[] demand;
    
 
     public GUIDelivery() {
         initComponents();
+        
         file = new JFileChooser();
         setTitle("Always On Time Delivery");
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
-        s = "";
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        s = "C:\\Users\\niqaq\\OneDrive\\Documents\\NetBeansProjects\\Always On Time Delivery\\Delivery\\instances\\n5-c10.txt";
+        cus = new MyCustomer<>();
+        car = new Vehicle(0);
+        filePathText.setText(s);
+        graphPanel.setBackground(Color.white);
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+        graphPanel.setBorder(blackline);
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,10 +50,13 @@ public class GUIDelivery extends javax.swing.JFrame {
         openFileButton = new javax.swing.JButton();
         instructionLabel = new javax.swing.JLabel();
         filePathText = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        submitButton = new javax.swing.JButton();
+        graphPanel = new javax.swing.JPanel();
+        graphLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        titleLabel.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("Welcome to Delivery Simulation ");
 
@@ -50,12 +72,18 @@ public class GUIDelivery extends javax.swing.JFrame {
 
         filePathText.setText("File path");
 
-        jButton1.setText("Submit");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        submitButton.setText("Submit");
+        submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                submitButtonActionPerformed(evt);
             }
         });
+
+        graphPanel.setLayout(new java.awt.GridLayout());
+
+        graphLabel.setText("Graph representation:");
+        graphLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        graphPanel.add(graphLabel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -69,29 +97,34 @@ public class GUIDelivery extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(openFileButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(filePathText, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(163, 163, 163)
+                        .addComponent(submitButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(165, 165, 165)
-                        .addComponent(jButton1)))
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(graphPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(openFileButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(filePathText, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(39, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(instructionLabel)
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(openFileButton)
                     .addComponent(filePathText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addContainerGap(171, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(submitButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -111,11 +144,42 @@ public class GUIDelivery extends javax.swing.JFrame {
         
     }//GEN-LAST:event_openFileButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    
+    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         // TODO add your handling code here:
         s = filePathText.getText();
-        JOptionPane.showMessageDialog(this, s);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        //JOptionPane.showMessageDialog(this, s);
+        InputData data = new InputData(s);
+        loc = data.getCoordinate();
+        demand = data.getDemand();
+        car.setCapacity(data.getC());
+        for (int i = 0; i < data.getN(); i++) {
+            cus.addCustomer(i, loc[i][0], loc[i][1], demand[i]);
+        }
+        System.out.println("Number of Customer: " + (cus.getSize()-1));
+        System.out.println("Customer and their demand");
+        for (int i = 0; i < cus.getSize(); i++) {
+            if (i == 0)
+                System.out.println("Depot" + cus.getCoordinate(i) + ": " + cus.getDemand(i));
+            else
+                System.out.println("Customer " + i + cus.getCoordinate(i) + ": "  + cus.getDemand(i));
+        }
+        System.out.println("Capacity of vehicle: " + car.getCapacity());
+        System.out.println("");
+        
+        for (int i = 0; i < cus.getSize(); i++) {
+            for (int j = 0; j < cus.getSize(); j++) {
+                cus.addEdge(i, j, cus.calCost(i, j));
+            }
+        }
+        cus.printEdges();
+        
+        GreedySearch greedy = new GreedySearch();
+        greedy.searchRoute(cus, car);
+        System.out.println("\nGreedy Simulation");
+        greedy.printSimulation();
+        System.out.println("");
+    }//GEN-LAST:event_submitButtonActionPerformed
 
     
     /**
@@ -151,15 +215,17 @@ public class GUIDelivery extends javax.swing.JFrame {
                 new GUIDelivery().setVisible(true);
             }
         });
-        
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField filePathText;
+    private javax.swing.JLabel graphLabel;
+    private javax.swing.JPanel graphPanel;
     private javax.swing.JLabel instructionLabel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton openFileButton;
+    private javax.swing.JButton submitButton;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+
+
 }
