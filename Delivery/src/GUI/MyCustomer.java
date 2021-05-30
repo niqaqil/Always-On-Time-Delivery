@@ -223,4 +223,9 @@ public class MyCustomer<T extends Comparable<T>, N extends Comparable<N>> {
         }
         return 0;
     }
+    
+    public void reset() {
+        head = null;
+        size = 0;
+    }
 }

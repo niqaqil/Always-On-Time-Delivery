@@ -149,6 +149,7 @@ public class GUIDelivery extends javax.swing.JFrame {
         // TODO add your handling code here:
         s = filePathText.getText();
         //JOptionPane.showMessageDialog(this, s);
+        cus.reset();
         InputData data = new InputData(s);
         loc = data.getCoordinate();
         demand = data.getDemand();
