@@ -52,7 +52,7 @@ public class GUIDelivery extends javax.swing.JFrame {
         instructionLabel = new javax.swing.JLabel();
         filePathText = new javax.swing.JTextField();
         submitButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        simulationLabel = new javax.swing.JLabel();
         graphPanel = new javax.swing.JPanel();
         graphLabel = new javax.swing.JLabel();
         selectSimulation = new javax.swing.JComboBox<>();
@@ -82,8 +82,8 @@ public class GUIDelivery extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Simulation:");
-        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        simulationLabel.setText("Simulation:");
+        simulationLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         graphPanel.setLayout(new java.awt.GridLayout(1, 0));
 
@@ -107,7 +107,7 @@ public class GUIDelivery extends javax.swing.JFrame {
                                 .addComponent(graphPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                                    .addComponent(simulationLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
                                     .addComponent(selectSimulation, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(openFileButton)
@@ -141,7 +141,7 @@ public class GUIDelivery extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(selectSimulation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(simulationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -175,14 +175,20 @@ public class GUIDelivery extends javax.swing.JFrame {
         for (int i = 0; i < data.getN(); i++) {
             cus.addCustomer(i, loc[i][0], loc[i][1], demand[i]);
         }
+        String info = "Customer and their demand\n";
         System.out.println("Number of Customer: " + (cus.getSize()-1));
-        System.out.println("Customer and their demand");
+        //System.out.println("Customer and their demand");
         for (int i = 0; i < cus.getSize(); i++) {
-            if (i == 0)
-                System.out.println("Depot" + cus.getCoordinate(i) + ": " + cus.getDemand(i));
-            else
-                System.out.println("Customer " + i + cus.getCoordinate(i) + ": "  + cus.getDemand(i));
+            if (i == 0) {
+                //System.out.println("Depot" + cus.getCoordinate(i) + ": " + cus.getDemand(i));
+                info += "Depot" + cus.getCoordinate(i) + ": " + cus.getDemand(i) + "\n";
+            }    
+            else {
+                //System.out.println("Customer " + i + cus.getCoordinate(i) + ": "  + cus.getDemand(i));
+                info += "Customer " + i + cus.getCoordinate(i) + ": "  + cus.getDemand(i) + "\n";
+            }               
         }
+        //System.out.println(info);
         System.out.println("Capacity of vehicle: " + car.getCapacity());
         
         for (int i = 0; i < cus.getSize(); i++) {
@@ -190,6 +196,7 @@ public class GUIDelivery extends javax.swing.JFrame {
                 cus.addEdge(i, j, cus.calCost(i, j));
             }
         }
+        simulationLabel.setText(convertToMultiline(info));
         
         GreedySearch greedy = new GreedySearch();
         greedy.searchRoute(cus, car);
@@ -198,7 +205,10 @@ public class GUIDelivery extends javax.swing.JFrame {
         System.out.println("");
     }//GEN-LAST:event_submitButtonActionPerformed
 
-    
+    public static String convertToMultiline(String orig){
+        return "<html>" + orig.replaceAll("\n", "<br>");
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -239,9 +249,9 @@ public class GUIDelivery extends javax.swing.JFrame {
     private javax.swing.JLabel graphLabel;
     private javax.swing.JPanel graphPanel;
     private javax.swing.JLabel instructionLabel;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JButton openFileButton;
     private javax.swing.JComboBox<String> selectSimulation;
+    private javax.swing.JLabel simulationLabel;
     private javax.swing.JButton submitButton;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
