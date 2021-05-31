@@ -114,4 +114,21 @@ public class GreedySearch {
             System.out.println("Cost: " + cost.get(i));
         }
     }
+
+    @Override
+    public String toString() {
+        String s = "Greedy Simulation\nTour\n";
+        s += "Tour Cost: " + costs + "\n";
+        for (int i = 0; i < GRoute.size(); i++) {
+            s += "Vehicle " + (i + 1) + "\n";
+            for (int j = 0; j < GRoute.get(i).length; j++) {
+                s += GRoute.get(i)[j];
+                if (j != GRoute.get(i).length - 1)
+                    s += " -> ";
+            }
+            s += "\nCapacity: " + capacity.get(i) + "\n";
+            s += "Cost: " + cost.get(i) + "\n";
+        }
+        return s;
+    }
 }

@@ -14,6 +14,7 @@ import javax.swing.border.Border;
 public class GUIDelivery extends javax.swing.JFrame {
     private JFileChooser file;
     private String s;
+    private String showSimulation;
     private MyCustomer<Integer, Integer> cus;
     private Vehicle car;
     private int[][] loc;
@@ -27,6 +28,7 @@ public class GUIDelivery extends javax.swing.JFrame {
         setTitle("Always On Time Delivery");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         s = "C:\\Users\\niqaq\\OneDrive\\Documents\\NetBeansProjects\\Always On Time Delivery\\Delivery\\instances\\n5-c10.txt";
+        showSimulation = "test simulation";
         cus = new MyCustomer<>();
         car = new Vehicle(0);
         filePathText.setText(s);
@@ -52,10 +54,11 @@ public class GUIDelivery extends javax.swing.JFrame {
         instructionLabel = new javax.swing.JLabel();
         filePathText = new javax.swing.JTextField();
         submitButton = new javax.swing.JButton();
-        simulationLabel = new javax.swing.JLabel();
         graphPanel = new javax.swing.JPanel();
         graphLabel = new javax.swing.JLabel();
         selectSimulation = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        simulationLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,16 +85,23 @@ public class GUIDelivery extends javax.swing.JFrame {
             }
         });
 
-        simulationLabel.setText("Simulation:");
-        simulationLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
         graphPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         graphLabel.setText("Graph representation:");
         graphLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         graphPanel.add(graphLabel);
 
-        selectSimulation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Select Simulation-", "Basic simulation", "Greedy simulation", "MCTS simulation" }));
+        selectSimulation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select Simulation--", "Basic simulation", "Greedy simulation", "MCTS simulation" }));
+        selectSimulation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectSimulationActionPerformed(evt);
+            }
+        });
+
+        simulationLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        simulationLabel.setText("Simulation:");
+        simulationLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jScrollPane1.setViewportView(simulationLabel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,25 +111,27 @@ public class GUIDelivery extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(248, 248, 248)
+                        .addComponent(instructionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(51, 51, 51)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(graphPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(simulationLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
-                                    .addComponent(selectSimulation, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(selectSimulation, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 22, Short.MAX_VALUE))
+                                    .addComponent(jScrollPane1)))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(openFileButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(filePathText, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(270, 270, 270)
-                                .addComponent(submitButton))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(248, 248, 248)
-                        .addComponent(instructionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                                .addComponent(submitButton)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,17 +144,18 @@ public class GUIDelivery extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(openFileButton)
                     .addComponent(filePathText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(submitButton)
-                .addGap(2, 2, 2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(submitButton)
+                        .addGap(2, 2, 2)
+                        .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
                         .addComponent(selectSimulation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(simulationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addGap(11, 11, 11)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))))
         );
 
         pack();
@@ -200,10 +213,24 @@ public class GUIDelivery extends javax.swing.JFrame {
         
         GreedySearch greedy = new GreedySearch();
         greedy.searchRoute(cus, car);
-        System.out.println("\nGreedy Simulation");
-        greedy.printSimulation();
-        System.out.println("");
+        showSimulation = greedy.toString();
+        
     }//GEN-LAST:event_submitButtonActionPerformed
+
+    private void selectSimulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectSimulationActionPerformed
+        String select = selectSimulation.getItemAt(selectSimulation.getSelectedIndex());
+        switch(select) {
+            case "Basic simulation":
+                simulationLabel.setText("Basic Simulation");
+                break;
+            case "Greedy simulation":
+                simulationLabel.setText(convertToMultiline(showSimulation));
+                break;
+            case "MCTS simulation":
+                simulationLabel.setText("MCTS Simulation");
+                break;
+        }
+    }//GEN-LAST:event_selectSimulationActionPerformed
 
     public static String convertToMultiline(String orig){
         return "<html>" + orig.replaceAll("\n", "<br>");
@@ -249,6 +276,7 @@ public class GUIDelivery extends javax.swing.JFrame {
     private javax.swing.JLabel graphLabel;
     private javax.swing.JPanel graphPanel;
     private javax.swing.JLabel instructionLabel;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton openFileButton;
     private javax.swing.JComboBox<String> selectSimulation;
     private javax.swing.JLabel simulationLabel;
