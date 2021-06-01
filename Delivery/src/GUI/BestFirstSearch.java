@@ -16,16 +16,19 @@ public class BestFirstSearch {
         routeCapacities = new ArrayList<>();
     }
 
-    public void searchRoute(InputData data, MyCustomer<Integer, Integer> cus, Vehicle car) {
+    public void searchRoute(MyCustomer<Integer, Integer> cus, Vehicle car) {
 
-        int numberOfCustomers = data.getN() - 1;
-        numberOfCustomers = cus.getSize() - 1;
-        int vehicleMaxCapacity = data.getC();
-        vehicleMaxCapacity = car.getCapacity();
-        int[][] coordinatesArray = data.getCoordinate();
+        int numberOfCustomers = cus.getSize() - 1;
+        //int vehicleMaxCapacity = data.getC();
+        int vehicleMaxCapacity = car.getCapacity();
+        int[][] coordinatesArray = new int[cus.getSize()][2];
         int[] demandArray = new int[cus.getSize()];
-        for (int i = 0; i < demandArray.length; i++)
+        for (int i = 0; i < demandArray.length; i++) {
             demandArray[i] = cus.getDemand(i);
+            coordinatesArray[i][0] = cus.getX(i);
+            coordinatesArray[i][1] = cus.getY(i);
+        }
+            
         Set<Integer> visitedPlaces = new TreeSet<>();
         visitedPlaces.add(0);
         int selectedNode = 0;
@@ -120,7 +123,7 @@ public class BestFirstSearch {
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
-        output.append("Best First Search Simulation\n");
+        output.append("~Best First Search Simulation~\n");
         output.append("Tour\n");
 
         double tourCost = 0.0;
@@ -129,7 +132,7 @@ public class BestFirstSearch {
         }
         output.append("Tour Cost: " + tourCost + "\n");
         for (int i = 0; i < paths.size(); i++) {
-            output.append("vehicle " + (i + 1) + "\n");
+            output.append("Vehicle " + (i + 1) + "\n");
             output.append("Capacity: " + routeCapacities.get(i) + "\n");
             ArrayList<Integer> path = paths.get(i);
             for (Integer node : path) {
