@@ -9,10 +9,10 @@ public class Test {
         InputData data = new InputData(s);
         int[][] loc = data.getCoordinate(); // coordinate for each customer include depot
         int[] demand = data.getDemand();
-        Customer[] cus = new Customer[data.getN()];
+        //Customer[] cus = new Customer[data.getN()];
          MyCustomer<Integer, Integer> customer = new MyCustomer<>(); // class graph
-        for (int i = 0; i < cus.length; i++) {
-            cus[i] = new Customer(i, s);
+        for (int i = 0; i < data.getN(); i++) {
+            //cus[i] = new Customer(i, s);
             customer.addCustomer(i, loc[i][0], loc[i][1], demand[i]);
         }
         
@@ -28,15 +28,14 @@ public class Test {
         Vehicle car = new Vehicle(data.getC());
         System.out.println("Capacity of each vehicles: " + car.getCapacity());
         System.out.println();
-        double[][] cost = new double[cus.length][cus.length];
+        double[][] cost = new double[customer.getSize()][customer.getSize()];
         for (int i = 0; i < cost.length; i++) {
             for (int j = 0; j < cost[i].length; j++) {
-                cost[i][j] = Customer.cost(cus[i].getCoordinate(), cus[j].getCoordinate());
+                cost[i][j] = customer.calCost(i, j);
                 customer.addEdge(i, j, cost[i][j]);
             }
         }
         //customer.printEdges(); // print edges for each location
-        Customer.setCost(cost);
        
 
         for (int i = 0; i < cost.length; i++) {
