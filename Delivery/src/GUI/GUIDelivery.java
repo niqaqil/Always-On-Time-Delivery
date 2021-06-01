@@ -14,7 +14,8 @@ import javax.swing.border.Border;
 public class GUIDelivery extends javax.swing.JFrame {
     private JFileChooser file;
     private String s;
-    private String showSimulation;
+    private String greedySimulation;
+    private String bestSimulation;
     private MyCustomer<Integer, Integer> cus;
     private Vehicle car;
     private int[][] loc;
@@ -28,7 +29,8 @@ public class GUIDelivery extends javax.swing.JFrame {
         setTitle("Always On Time Delivery");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         s = "C:\\Users\\niqaq\\OneDrive\\Documents\\NetBeansProjects\\Always On Time Delivery\\Delivery\\instances\\n5-c10.txt";
-        showSimulation = "test simulation";
+        greedySimulation = "Greedy simulation";
+        bestSimulation = "Best First Seacrh Simulation";
         cus = new MyCustomer<>();
         car = new Vehicle(0);
         filePathText.setText(s);
@@ -91,7 +93,7 @@ public class GUIDelivery extends javax.swing.JFrame {
         graphLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         graphPanel.add(graphLabel);
 
-        selectSimulation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select Simulation--", "Basic simulation", "Greedy simulation", "MCTS simulation" }));
+        selectSimulation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select Simulation--", "Basic simulation", "Greedy simulation", "MCTS simulation", "Best First Search simulation" }));
         selectSimulation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectSimulationActionPerformed(evt);
@@ -213,8 +215,12 @@ public class GUIDelivery extends javax.swing.JFrame {
         
         GreedySearch greedy = new GreedySearch();
         greedy.searchRoute(cus, car);
-        showSimulation = greedy.toString();
+        greedySimulation = greedy.toString();
         
+        BestFirstSearch best = new BestFirstSearch();
+        best.searchRoute(data, cus, car);
+        bestSimulation = best.toString();
+        selectSimulation.setSelectedIndex(0);
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void selectSimulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectSimulationActionPerformed
@@ -224,11 +230,13 @@ public class GUIDelivery extends javax.swing.JFrame {
                 simulationLabel.setText("Basic Simulation");
                 break;
             case "Greedy simulation":
-                simulationLabel.setText(convertToMultiline(showSimulation));
+                simulationLabel.setText(convertToMultiline(greedySimulation));
                 break;
             case "MCTS simulation":
                 simulationLabel.setText("MCTS Simulation");
                 break;
+            case "Best First Search simulation":
+                simulationLabel.setText(convertToMultiline(bestSimulation));
         }
     }//GEN-LAST:event_selectSimulationActionPerformed
 
