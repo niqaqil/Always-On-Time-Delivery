@@ -39,17 +39,19 @@ public class Test {
         Customer.setCost(cost);
        
 
-//        for (int i = 0; i < cost.length; i++) {
-//            System.out.printf("%d |\t", i);
-//            for (int j = 0; j < cost[i].length; j++) {
-//                System.out.printf("%.2f \t", cost[i][j]);
-//            }
-//            System.out.printf("|\n");
-//        }
+        for (int i = 0; i < cost.length; i++) {
+            System.out.printf("%d |\t", i);
+            for (int j = 0; j < cost[i].length; j++) {
+                System.out.printf("%.2f \t", cost[i][j]);
+            }
+            System.out.printf("|\n");
+        }
         GreedySearch greedy = new GreedySearch();
-        System.out.println("Greedy Simulation");
         greedy.searchRoute(customer, car);
-        greedy.printSimulation();
+        System.out.println("\n" + greedy.toString());
+        BestFirstSearch best = new BestFirstSearch();
+        best.searchRoute(data, customer, car);
+        System.out.println(best.toString());
        
     }
 }
