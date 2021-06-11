@@ -192,6 +192,7 @@ public class GUIDelivery extends javax.swing.JFrame {
         InputData data = new InputData(s);
         loc = data.getCoordinate();
         demand = data.getDemand();
+        nodeList.clear();
         nodeList.add(new Depot(data.getN(), data.getC(), loc[0][0], loc[0][1]));
         for (int i = 1; i < loc.length; i++) {
             nodeList.add(new MyCustomer(loc[i][0], loc[i][1], demand[i]));
@@ -201,7 +202,7 @@ public class GUIDelivery extends javax.swing.JFrame {
             cus.addCustomer(i, loc[i][0], loc[i][1], demand[i]);
         }
         String info = "Customer and their demand\n";
-        System.out.println("Number of Customer: " + (cus.getSize()-1));
+        //System.out.println("Number of Customer: " + (cus.getSize()-1));
         //System.out.println("Customer and their demand");
         for (int i = 0; i < cus.getSize(); i++) {
             if (i == 0) {
@@ -214,7 +215,7 @@ public class GUIDelivery extends javax.swing.JFrame {
             }               
         }
         //System.out.println(info);
-        System.out.println("Capacity of vehicle: " + car.getCapacity());
+        //System.out.println("Capacity of vehicle: " + car.getCapacity());
         
         for (int i = 0; i < cus.getSize(); i++) {
             for (int j = 0; j < cus.getSize(); j++) {

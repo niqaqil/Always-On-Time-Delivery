@@ -173,7 +173,7 @@ public class BasicSearch {
     public String displayPath(ArrayList<Vehicle> vehicleList) {
         String s = "";
         for (int i = 1; i <= vehicleList.size(); i++) {
-            s += "🚚 Vehicle " + i + "\n";
+            s += "Vehicle " + i + "\n";
             s += vehicleList.get(i - 1) + "\n";
         }
         return s;
@@ -181,7 +181,7 @@ public class BasicSearch {
 
     @Override
     public String toString() {
-        String s = "Basic Simulation\n";
+        String s = "~Basic Simulation~\n";
         s += "Tour\nTour Cost: " + tour + "\n";
         s += displayPath(vehiclePath);
         return s;
