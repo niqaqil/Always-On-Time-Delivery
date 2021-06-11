@@ -49,10 +49,28 @@ public class MyCustomer<T extends Comparable<T>, N extends Comparable<N>> {
 
     Vertex<T, N> head;
     private int size;
+    
+    // this for bfs
+    protected int xCoordinate;
+    protected int yCoordinate;
+    protected int demandSize;
+    protected boolean wasVisited;
+    protected int ID;
+    protected static int serialNum = 0;
 
     public MyCustomer() {
         head = null;
         size = 0;
+    }
+    
+    // constructor for bfs
+    public MyCustomer(int xCoordinate, int yCoordinate, int demandSize){
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
+        this.demandSize = demandSize;
+        wasVisited = false;
+        this.ID = serialNum;
+        serialNum++;
     }
 
     public int getSize() {

@@ -1,5 +1,7 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class InputData {
@@ -78,18 +80,5 @@ public class InputData {
         }
         return demand;
     }
-
-    public static void main(String[] args) {
-        InputData data = new InputData("input.txt");
-        System.out.print(data.getN() + " ");
-        System.out.println(data.getC());
-        int[][] location = data.getCoordinate();
-        int[] demand = data.getDemand();
-        for (int i = 0; i < location.length; i++) {
-            for (int j = 0; j < location[i].length; j++)
-                System.out.print(location[i][j] + " ");
-            System.out.println(demand[i]);
-        }
-
-    }
+    
 }

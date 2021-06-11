@@ -1,4 +1,5 @@
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Test {
@@ -9,10 +10,8 @@ public class Test {
         InputData data = new InputData(s);
         int[][] loc = data.getCoordinate(); // coordinate for each customer include depot
         int[] demand = data.getDemand();
-        //Customer[] cus = new Customer[data.getN()];
-         MyCustomer<Integer, Integer> customer = new MyCustomer<>(); // class graph
+        MyCustomer<Integer, Integer> customer = new MyCustomer<>(); // class graph
         for (int i = 0; i < data.getN(); i++) {
-            //cus[i] = new Customer(i, s);
             customer.addCustomer(i, loc[i][0], loc[i][1], demand[i]);
         }
         
@@ -45,9 +44,19 @@ public class Test {
             }
             System.out.printf("|\n");
         }
+        List<MyCustomer> nodeList = new ArrayList<>();
+        nodeList.add(new Depot(data.getN(), data.getC(), loc[0][0], loc[0][1]));
+        for (int i = 1; i < loc.length; i++) {
+            nodeList.add(new MyCustomer(loc[i][0], loc[i][1], demand[i]));
+        }
+        BasicSearch bfs = new BasicSearch(nodeList);
+        bfs.searchRoute();
+        System.out.println("\n" + bfs.toString());
+        
         GreedySearch greedy = new GreedySearch();
         greedy.searchRoute(customer, car);
         System.out.println("\n" + greedy.toString());
+        
         BestFirstSearch best = new BestFirstSearch();
         best.searchRoute(data, customer, car);
         System.out.println(best.toString());
