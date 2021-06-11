@@ -4,6 +4,8 @@ package GUI;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -18,6 +20,8 @@ public class GUIDelivery extends javax.swing.JFrame {
     private Vehicle car;
     private int[][] loc;
     private int[] demand;
+    private List<MyCustomer> nodeList;
+    
    
 
     public GUIDelivery() {
@@ -29,13 +33,12 @@ public class GUIDelivery extends javax.swing.JFrame {
         s = "Select a text file";
         cus = new MyCustomer<>();
         car = new Vehicle(0);
+        nodeList = new ArrayList<>();
         filePathText.setText(s);
         graphPanel.setBackground(Color.white);
         Border blackline = BorderFactory.createLineBorder(Color.black);
         graphPanel.setBorder(blackline);
-       
     }
-    
     
 
     /**
@@ -85,11 +88,19 @@ public class GUIDelivery extends javax.swing.JFrame {
             }
         });
 
-        graphPanel.setLayout(new java.awt.GridLayout(1, 0));
-
         graphLabel.setText("Graph representation:");
         graphLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        graphPanel.add(graphLabel);
+
+        javax.swing.GroupLayout graphPanelLayout = new javax.swing.GroupLayout(graphPanel);
+        graphPanel.setLayout(graphPanelLayout);
+        graphPanelLayout.setHorizontalGroup(
+            graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(graphLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        graphPanelLayout.setVerticalGroup(
+            graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(graphLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         selectSimulation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select Simulation--", "Basic simulation", "Greedy simulation", "MCTS simulation", "Best First Search simulation" }));
         selectSimulation.addActionListener(new java.awt.event.ActionListener() {
@@ -113,7 +124,7 @@ public class GUIDelivery extends javax.swing.JFrame {
                 .addGap(51, 51, 51)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                        .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(selectSimulation, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -146,8 +157,7 @@ public class GUIDelivery extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(2, 2, 2)
-                        .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addComponent(selectSimulation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -182,6 +192,10 @@ public class GUIDelivery extends javax.swing.JFrame {
         InputData data = new InputData(s);
         loc = data.getCoordinate();
         demand = data.getDemand();
+        nodeList.add(new Depot(data.getN(), data.getC(), loc[0][0], loc[0][1]));
+        for (int i = 1; i < loc.length; i++) {
+            nodeList.add(new MyCustomer(loc[i][0], loc[i][1], demand[i]));
+        }
         car.setCapacity(data.getC());
         for (int i = 0; i < data.getN(); i++) {
             cus.addCustomer(i, loc[i][0], loc[i][1], demand[i]);
@@ -212,11 +226,15 @@ public class GUIDelivery extends javax.swing.JFrame {
         selectSimulation.setSelectedIndex(0);
     }//GEN-LAST:event_submitButtonActionPerformed
 
+    
+    
     private void selectSimulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectSimulationActionPerformed
         String select = selectSimulation.getItemAt(selectSimulation.getSelectedIndex());
         switch(select) {
             case "Basic simulation":
-                simulationLabel.setText("Basic Simulation");
+                BasicSearch bfs = new BasicSearch(nodeList);
+                bfs.searchRoute();
+                simulationLabel.setText(convertToMultiline(bfs.toString()));
                 break;
             case "Greedy simulation":
                 GreedySearch greedy = new GreedySearch();
@@ -230,6 +248,7 @@ public class GUIDelivery extends javax.swing.JFrame {
                 BestFirstSearch best = new BestFirstSearch();
                 best.searchRoute(cus, car);
                 simulationLabel.setText(convertToMultiline(best.toString()));
+                break;
         }
     }//GEN-LAST:event_selectSimulationActionPerformed
 
