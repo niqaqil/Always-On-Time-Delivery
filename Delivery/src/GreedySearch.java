@@ -115,7 +115,7 @@ public class GreedySearch {
     
     @Override
     public String toString() {
-        String s = "Greedy Simulation\nTour\n";
+        String s = "~Greedy Simulation~\nTour\n";
         s += "Tour Cost: " + costs + "\n";
         for (int i = 0; i < GRoute.size(); i++) {
             s += "Vehicle " + (i + 1) + "\n";

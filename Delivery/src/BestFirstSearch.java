@@ -117,7 +117,7 @@ public class BestFirstSearch {
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
-        output.append("Best First Search Simulation\n");
+        output.append("~Best First Search Simulation~\n");
         output.append("Tour\n");
 
         double tourCost = 0.0;
