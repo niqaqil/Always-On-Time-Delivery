@@ -1,7 +1,5 @@
 
 import java.util.ArrayList;
-import java.util.TreeSet;
-import java.util.Set;
 
 public class BestFirstSearch {
 
@@ -25,7 +23,7 @@ public class BestFirstSearch {
         int[] demandArray = new int[cus.getSize()];
         for (int i = 0; i < demandArray.length; i++)
             demandArray[i] = cus.getDemand(i);
-        Set<Integer> visitedPlaces = new TreeSet<>();
+        ArrayList<Integer> visitedPlaces = new ArrayList<>();
         visitedPlaces.add(0);
         int selectedNode = 0;
         int remainingCapacity = vehicleMaxCapacity;
