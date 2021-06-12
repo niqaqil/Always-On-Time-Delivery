@@ -243,7 +243,9 @@ public class GUIDelivery extends javax.swing.JFrame {
                 simulationLabel.setText(convertToMultiline(greedy.toString()));
                 break;
             case "MCTS simulation":
-                simulationLabel.setText("MCTS Simulation");
+                MCTS mcts = new MCTS((ArrayList<MyCustomer>) nodeList);
+                mcts.search(3, 100);
+                simulationLabel.setText(convertToMultiline(mcts.toString()));
                 break;
             case "Best First Search simulation":
                 BestFirstSearch best = new BestFirstSearch();

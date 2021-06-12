@@ -6,7 +6,7 @@ public class Test {
 
     public static void main(String[] args) {
        
-        String s = "instances\\n5-c10.txt";
+        String s = "instances\\n7-c27.txt";
         InputData data = new InputData(s);
         int[][] loc = data.getCoordinate(); // coordinate for each customer include depot
         int[] demand = data.getDemand();
@@ -55,11 +55,15 @@ public class Test {
         
         GreedySearch greedy = new GreedySearch();
         greedy.searchRoute(customer, car);
-        System.out.println("\n" + greedy.toString());
+        System.out.println(greedy.toString());
+        
+        MCTS mcts = new MCTS((ArrayList<MyCustomer>) nodeList);
+        mcts.search(3, 100);
+        System.out.println(mcts.toString());
         
         BestFirstSearch best = new BestFirstSearch();
         best.searchRoute(data, customer, car);
-        System.out.println(best.toString());
+        System.out.println("\n" + best.toString());
        
     }
 }
