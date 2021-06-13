@@ -16,7 +16,7 @@ public class BestFirstSearch {
         routeCapacities = new ArrayList<>();
     }
 
-    public void searchRoute(MyCustomer<Integer, Integer> cus, Vehicle car) {
+    public void searchRoute(Customer<Integer, Integer> cus, Vehicle car) {
 
         int numberOfCustomers = cus.getSize() - 1;
         //int vehicleMaxCapacity = data.getC();

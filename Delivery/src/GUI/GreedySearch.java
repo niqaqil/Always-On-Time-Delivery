@@ -35,7 +35,7 @@ public class GreedySearch {
         return true;  // return true if all places had been visited
     }
 
-    public int shortPath(int parent, MyCustomer<Integer, Integer> cus, boolean[] visit) {  // find index of next customer that is the nearest from parent(curent place)
+    public int shortPath(int parent, Customer<Integer, Integer> cus, boolean[] visit) {  // find index of next customer that is the nearest from parent(curent place)
         double min = Integer.MAX_VALUE;
         int index = 0;
         for (int i = 0; i < cus.getSize(); i++) {
@@ -48,7 +48,7 @@ public class GreedySearch {
         return index;
     }
 
-    public double vehicleRoute(MyCustomer<Integer, Integer> cus, Vehicle car, ArrayList<Integer> visitVertex) {  
+    public double vehicleRoute(Customer<Integer, Integer> cus, Vehicle car, ArrayList<Integer> visitVertex) {  
         int totalDemand = 0;
         double totalCost = 0;
         boolean[] visited = new boolean[cus.getSize()];
@@ -87,7 +87,7 @@ public class GreedySearch {
         return totalCost;
     }
 
-    public void searchRoute(MyCustomer<Integer, Integer> cus, Vehicle car) {  // compute all total cost of all vehicle that had been used
+    public void searchRoute(Customer<Integer, Integer> cus, Vehicle car) {  // compute all total cost of all vehicle that had been used
         ArrayList<Integer> visited = new ArrayList<>();
         double totalCost = 0;
         int count = 1;

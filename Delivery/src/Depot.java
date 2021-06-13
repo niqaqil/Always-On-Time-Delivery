@@ -1,4 +1,4 @@
-public class Depot extends MyCustomer{
+public class Depot extends Customer{
     protected int numOfCustomers;
     protected int maximumCapacity;
 

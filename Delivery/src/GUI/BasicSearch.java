@@ -11,12 +11,12 @@ public class BasicSearch {
     protected double route;
     protected double tour;
     protected Depot depot;
-    protected List<MyCustomer> customerList;
-    protected LinkedList<MyCustomer> linkedList = new LinkedList<>();
+    protected List<Customer> customerList;
+    protected LinkedList<Customer> linkedList = new LinkedList<>();
     protected ArrayList<Vehicle> vehiclePath = new ArrayList<>();
 
 
-    public BasicSearch(List<MyCustomer> list) {
+    public BasicSearch(List<Customer> list) {
         this.customerList = list;
         depot = (Depot) list.get(0);
         numOfVehicles = 0;
@@ -43,7 +43,7 @@ public class BasicSearch {
         }
     }
 
-    public double calcRouteCost(LinkedList<MyCustomer> linkedList) {
+    public double calcRouteCost(LinkedList<Customer> linkedList) {
         double routeCost = 0;
 
         for (int i = 0; i < linkedList.size() - 1; i++) {
@@ -56,7 +56,7 @@ public class BasicSearch {
 
     public int getUnvisitedVertex(int a) {
         for (int i = 1; i < customerList.size(); i++) {
-            MyCustomer cus = (MyCustomer) customerList.get(i);
+            Customer cus = (Customer) customerList.get(i);
             if (!cus.wasVisited && matrixAdjacent[a][i] > 0) {
                 return customerList.get(i).ID;
             }
@@ -76,7 +76,7 @@ public class BasicSearch {
 
     public boolean completeVisited() {
         for (int i = 1; i < customerList.size(); i++) {
-            if (!((MyCustomer) customerList.get(i)).wasVisited)
+            if (!((Customer) customerList.get(i)).wasVisited)
                 return false;
         }
         return true;

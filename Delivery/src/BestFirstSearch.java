@@ -13,7 +13,7 @@ public class BestFirstSearch {
         routeCapacities = new ArrayList<>();
     }
 
-    public void searchRoute(InputData data, MyCustomer<Integer, Integer> cus, Vehicle car) {
+    public void searchRoute(InputData data, Customer<Integer, Integer> cus, Vehicle car) {
 
         int numberOfCustomers = data.getN() - 1;
         numberOfCustomers = cus.getSize() - 1;

@@ -1,5 +1,6 @@
+package GUI;
 
-public class MyCustomer<T extends Comparable<T>, N extends Comparable<N>> {
+public class Customer<T extends Comparable<T>, N extends Comparable<N>> {
 
     private class Vertex<T extends Comparable<T>, N extends Comparable<N>> {
         T vertexInfo;
@@ -58,13 +59,12 @@ public class MyCustomer<T extends Comparable<T>, N extends Comparable<N>> {
     protected int ID;
     protected static int serialNum = 0;
 
-    public MyCustomer() {
+    public Customer() {
         head = null;
         size = 0;
     }
-    
-    // constructor for bfs
-    public MyCustomer(int xCoordinate, int yCoordinate, int demandSize){
+
+    public Customer(int xCoordinate, int yCoordinate, int demandSize) {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.demandSize = demandSize;
@@ -166,6 +166,24 @@ public class MyCustomer<T extends Comparable<T>, N extends Comparable<N>> {
             temp = temp.nextVertex;
         return " (" + temp.x + ", " + temp.y + ") ";
     }
+    
+    public int getX(int pos) {
+        if (pos > size - 1 || pos < 0)
+            return 0;
+        Vertex<T, N> temp = head;
+        for (int i = 0; i < pos; i++)
+            temp = temp.nextVertex;
+        return temp.x;
+    }
+    
+    public int getY(int pos) {
+        if (pos > size - 1 || pos < 0)
+            return 0;
+        Vertex<T, N> temp = head;
+        for (int i = 0; i < pos; i++)
+            temp = temp.nextVertex;
+        return temp.y;
+    }
 
     public int getDemand(int pos) {  // return demand at each location
         if (pos > size - 1 || pos < 0)
@@ -221,5 +239,10 @@ public class MyCustomer<T extends Comparable<T>, N extends Comparable<N>> {
             sourceVertex = sourceVertex.nextVertex;
         }
         return 0;
+    }
+    
+    public void reset() {
+        head = null;
+        size = 0;
     }
 }

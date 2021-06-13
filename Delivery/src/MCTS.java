@@ -6,7 +6,7 @@ import java.util.Random;
 public class MCTS {
     private double adjMatrix[][];
     private Depot d;
-    private static ArrayList<MyCustomer> c;
+    private static ArrayList<Customer> c;
     private double distance;
     //LinkedList<MyCustomer> linkedList = new LinkedList<>();
     //ArrayList<Vehicle> vehicleList = new ArrayList<>();
@@ -17,13 +17,13 @@ public class MCTS {
     private int N;
     private double policy[][][];
     private double globalPolicy[][];
-    ArrayList<MyCustomer> location;
+    ArrayList<Customer> location;
     Tour best_tour = new Tour(Double.POSITIVE_INFINITY);
     int timeLimit = 60;
     private final int l = 3;
     private final int ite = 100;
     
-    public MCTS(ArrayList<MyCustomer> c) {
+    public MCTS(ArrayList<Customer> c) {
         this.c = c;
         d=(Depot)c.get(0);
         N = c.size();
@@ -41,7 +41,7 @@ public class MCTS {
                 adjMatrix[i][j] = adjMatrix[j][i] = distance;  //because is undirected edge
             }
         }
-        this.location = (ArrayList<MyCustomer>) c.clone();
+        this.location = (ArrayList<Customer>) c.clone();
     }
     
     public Tour search(int level, int iteration) {
@@ -64,7 +64,7 @@ public class MCTS {
     }
     
     public void adapt(Tour a_tour, int level) {
-        ArrayList<MyCustomer> visited = new ArrayList<>();
+        ArrayList<Customer> visited = new ArrayList<>();
         //for every route in tour
         for (int i = 0; i < a_tour.getRouteSize(); i++) {
             for (int j = 0; j < a_tour.getRoute().get(i).size()-1; j++) {
@@ -93,14 +93,14 @@ public class MCTS {
     }
     
     public Tour rollout() {
-        MyCustomer currentStop;
-        MyCustomer nextStop;
+        Customer currentStop;
+        Customer nextStop;
 
-        ArrayList<MyCustomer> possible_successors = (ArrayList<MyCustomer>)location.clone();
+        ArrayList<Customer> possible_successors = (ArrayList<Customer>)location.clone();
         possible_successors.remove(0); //depot removed
 
-        ArrayList<MyCustomer> visited = new ArrayList<>();
-        ArrayList<MyCustomer> checked = new ArrayList<>();
+        ArrayList<Customer> visited = new ArrayList<>();
+        ArrayList<Customer> checked = new ArrayList<>();
 
         Tour new_tour = new Tour(adjMatrix,c);
         new_tour.addNewRoute();
@@ -146,7 +146,7 @@ public class MCTS {
         return new_tour;
     }
     
-    public MyCustomer select_next_move(MyCustomer currentStop, ArrayList<MyCustomer> possible_successors) {
+    public Customer select_next_move(Customer currentStop, ArrayList<Customer> possible_successors) {
         double[] probability = new double[possible_successors.size()];
         double sum = 0;
         for (int i = 0; i < possible_successors.size(); i++) {

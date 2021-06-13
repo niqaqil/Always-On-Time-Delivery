@@ -10,7 +10,7 @@ public class Test {
         InputData data = new InputData(s);
         int[][] loc = data.getCoordinate(); // coordinate for each customer include depot
         int[] demand = data.getDemand();
-        MyCustomer<Integer, Integer> customer = new MyCustomer<>(); // class graph
+        Customer<Integer, Integer> customer = new Customer<>(); // class graph
         for (int i = 0; i < data.getN(); i++) {
             customer.addCustomer(i, loc[i][0], loc[i][1], demand[i]);
         }
@@ -36,18 +36,10 @@ public class Test {
         }
         //customer.printEdges(); // print edges for each location
        
-
-        for (int i = 0; i < cost.length; i++) {
-            System.out.printf("%d |\t", i);
-            for (int j = 0; j < cost[i].length; j++) {
-                System.out.printf("%.2f \t", cost[i][j]);
-            }
-            System.out.printf("|\n");
-        }
-        List<MyCustomer> nodeList = new ArrayList<>();
+        List<Customer> nodeList = new ArrayList<>();
         nodeList.add(new Depot(data.getN(), data.getC(), loc[0][0], loc[0][1]));
         for (int i = 1; i < loc.length; i++) {
-            nodeList.add(new MyCustomer(loc[i][0], loc[i][1], demand[i]));
+            nodeList.add(new Customer(loc[i][0], loc[i][1], demand[i]));
         }
         BasicSearch bfs = new BasicSearch(nodeList);
         bfs.searchRoute();
@@ -57,7 +49,7 @@ public class Test {
         greedy.searchRoute(customer, car);
         System.out.println(greedy.toString());
         
-        MCTS mcts = new MCTS((ArrayList<MyCustomer>) nodeList);
+        MCTS mcts = new MCTS((ArrayList<Customer>) nodeList);
         mcts.search(3, 100);
         System.out.println(mcts.toString());
         

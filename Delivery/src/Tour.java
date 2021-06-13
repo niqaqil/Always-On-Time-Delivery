@@ -5,25 +5,25 @@ import java.util.List;
 
 public class Tour {
     private double tourCost;
-    private ArrayList<LinkedList<MyCustomer>> route = new ArrayList<>();
+    private ArrayList<LinkedList<Customer>> route = new ArrayList<>();
     double[][] adjMatrix;
-    List<MyCustomer> cus;
+    List<Customer> cus;
 
     public Tour(double tourCost) {
         this.tourCost = tourCost;
     }
 
-    public Tour(double[][] adjMatrix, List<MyCustomer> cus) {
+    public Tour(double[][] adjMatrix, List<Customer> cus) {
         this.adjMatrix = adjMatrix;
         this.cus = cus;
         tourCost = 0;
     }
 
-    public void add(LinkedList<MyCustomer> r) {
+    public void add(LinkedList<Customer> r) {
         route.add(r);
     }
 
-    public ArrayList<LinkedList<MyCustomer>> getRoute() {
+    public ArrayList<LinkedList<Customer>> getRoute() {
         return route;
     }
 
@@ -38,7 +38,7 @@ public class Tour {
         return tourCost;
     }
 
-    public double computeRouteCost(LinkedList<MyCustomer> c) {
+    public double computeRouteCost(LinkedList<Customer> c) {
         double routeCost = 0;
         int i;
         for (i = 0; i < c.size()-1; i++) {
@@ -49,25 +49,25 @@ public class Tour {
         return routeCost;
     }
 
-    public void addStop(MyCustomer n) {
+    public void addStop(Customer n) {
         route.get(route.size()-1).add(n);
         tourCost = computeTourCost();
     }
 
     public void addNewRoute() {
-        LinkedList<MyCustomer> tempList = new LinkedList<>();
+        LinkedList<Customer> tempList = new LinkedList<>();
         tempList.add(cus.get(0));
         route.add(tempList);
         tourCost = computeTourCost();
     }
 
-    public MyCustomer getLastStop() {
+    public Customer getLastStop() {
         int routeSize = route.size()-1;
         int linkedListRouteSize = route.get(routeSize).size()-1;
         return route.get(routeSize).get(linkedListRouteSize);
     }
 
-    public int computeCapacity(LinkedList<MyCustomer> c) {
+    public int computeCapacity(LinkedList<Customer> c) {
         int capacity = 0;
         for (int i = 1; i < c.size()-1; i++)
             capacity += c.get(i).demandSize;

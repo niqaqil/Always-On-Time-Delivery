@@ -5,16 +5,16 @@ import java.util.LinkedList;
 public class Vehicle {
     protected int capacity;
     private double cost;
-    private LinkedList<MyCustomer> path;
+    private LinkedList<Customer> path;
     
 
     public Vehicle(int capacity) {
         this.capacity = capacity;
     }
     
-    public Vehicle(LinkedList<MyCustomer> path, double cost, int capacity) {
+    public Vehicle(LinkedList<Customer> path, double cost, int capacity) {
         this.capacity = capacity;
-        this.path = (LinkedList<MyCustomer>) path.clone();
+        this.path = (LinkedList<Customer>) path.clone();
         this.cost = cost;
     }
 

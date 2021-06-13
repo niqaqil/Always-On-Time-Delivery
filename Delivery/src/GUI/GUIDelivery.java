@@ -13,13 +13,13 @@ import javax.swing.border.Border;
 public class GUIDelivery extends javax.swing.JFrame {
     private JFileChooser file;
     private String s;
-    private MyCustomer<Integer, Integer> cus;
+    private Customer<Integer, Integer> cus;
     private Vehicle car;
     private int N;
     private int C;
     private int[][] loc;
     private int[] demand;
-    private List<MyCustomer> nodeList;
+    private List<Customer> nodeList;
     
    
 
@@ -30,7 +30,7 @@ public class GUIDelivery extends javax.swing.JFrame {
         setTitle("Always On Time Delivery");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         s = "Select a text file";
-        cus = new MyCustomer<>();
+        cus = new Customer<>();
         car = new Vehicle(0);
         nodeList = new ArrayList<>();
         filePathText.setText(s);
@@ -171,7 +171,7 @@ public class GUIDelivery extends javax.swing.JFrame {
         nodeList.clear();
         nodeList.add(new Depot(N, C, loc[0][0], loc[0][1]));
         for (int i = 1; i < loc.length; i++) {
-            nodeList.add(new MyCustomer(loc[i][0], loc[i][1], demand[i]));
+            nodeList.add(new Customer(loc[i][0], loc[i][1], demand[i]));
         }
         car.setCapacity(C);
         for (int i = 0; i < data.getN(); i++) {
@@ -219,7 +219,7 @@ public class GUIDelivery extends javax.swing.JFrame {
                 simulationLabel.setText(convertToMultiline(greedy.toString()));
                 break;
             case "MCTS simulation":
-                MCTS mcts = new MCTS((ArrayList<MyCustomer>) nodeList);
+                MCTS mcts = new MCTS((ArrayList<Customer>) nodeList);
                 mcts.search(3, 100);
                 simulationLabel.setText(convertToMultiline(mcts.toString()));
                 break;
