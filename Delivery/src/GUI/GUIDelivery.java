@@ -18,6 +18,8 @@ public class GUIDelivery extends javax.swing.JFrame {
     private String s;
     private MyCustomer<Integer, Integer> cus;
     private Vehicle car;
+    private int N;
+    private int C;
     private int[][] loc;
     private int[] demand;
     private List<MyCustomer> nodeList;
@@ -35,9 +37,8 @@ public class GUIDelivery extends javax.swing.JFrame {
         car = new Vehicle(0);
         nodeList = new ArrayList<>();
         filePathText.setText(s);
-        graphPanel.setBackground(Color.white);
         Border blackline = BorderFactory.createLineBorder(Color.black);
-        graphPanel.setBorder(blackline);
+
     }
     
 
@@ -55,8 +56,6 @@ public class GUIDelivery extends javax.swing.JFrame {
         instructionLabel = new javax.swing.JLabel();
         filePathText = new javax.swing.JTextField();
         submitButton = new javax.swing.JButton();
-        graphPanel = new javax.swing.JPanel();
-        graphLabel = new javax.swing.JLabel();
         selectSimulation = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         simulationLabel = new javax.swing.JLabel();
@@ -88,20 +87,6 @@ public class GUIDelivery extends javax.swing.JFrame {
             }
         });
 
-        graphLabel.setText("Graph representation:");
-        graphLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-
-        javax.swing.GroupLayout graphPanelLayout = new javax.swing.GroupLayout(graphPanel);
-        graphPanel.setLayout(graphPanelLayout);
-        graphPanelLayout.setHorizontalGroup(
-            graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(graphLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        graphPanelLayout.setVerticalGroup(
-            graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(graphLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-
         selectSimulation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select Simulation--", "Basic simulation", "Greedy simulation", "MCTS simulation", "Best First Search simulation" }));
         selectSimulation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,6 +94,7 @@ public class GUIDelivery extends javax.swing.JFrame {
             }
         });
 
+        simulationLabel.setBackground(new java.awt.Color(255, 255, 255));
         simulationLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         simulationLabel.setText("Simulation:");
         simulationLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -119,22 +105,18 @@ public class GUIDelivery extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(titleLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
+            .addComponent(titleLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(51, 51, 51)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(selectSimulation, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1))
-                        .addGap(39, 39, 39))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+                        .addComponent(selectSimulation, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(openFileButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(filePathText)
-                        .addContainerGap())))
+                        .addComponent(filePathText, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(50, Short.MAX_VALUE))
             .addComponent(instructionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -154,15 +136,10 @@ public class GUIDelivery extends javax.swing.JFrame {
                     .addComponent(filePathText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(submitButton)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(selectSimulation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(11, 11, 11)
-                        .addComponent(jScrollPane1)))
+                .addGap(1, 1, 1)
+                .addComponent(selectSimulation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -192,12 +169,14 @@ public class GUIDelivery extends javax.swing.JFrame {
         InputData data = new InputData(s);
         loc = data.getCoordinate();
         demand = data.getDemand();
+        N = data.getN();
+        C = data.getC();
         nodeList.clear();
-        nodeList.add(new Depot(data.getN(), data.getC(), loc[0][0], loc[0][1]));
+        nodeList.add(new Depot(N, C, loc[0][0], loc[0][1]));
         for (int i = 1; i < loc.length; i++) {
             nodeList.add(new MyCustomer(loc[i][0], loc[i][1], demand[i]));
         }
-        car.setCapacity(data.getC());
+        car.setCapacity(C);
         for (int i = 0; i < data.getN(); i++) {
             cus.addCustomer(i, loc[i][0], loc[i][1], demand[i]);
         }
@@ -296,8 +275,6 @@ public class GUIDelivery extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField filePathText;
-    private javax.swing.JLabel graphLabel;
-    private javax.swing.JPanel graphPanel;
     private javax.swing.JLabel instructionLabel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton openFileButton;
