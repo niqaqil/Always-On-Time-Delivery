@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BasicSearch {
+
     protected int numOfVehicles;
     protected double[][] matrixAdjacent;
     protected double distance;
@@ -15,7 +16,6 @@ public class BasicSearch {
     protected LinkedList<Customer> linkedList = new LinkedList<>();
     protected ArrayList<Vehicle> vehiclePath = new ArrayList<>();
 
-
     public BasicSearch(List<Customer> list) {
         this.customerList = list;
         depot = (Depot) list.get(0);
@@ -23,23 +23,16 @@ public class BasicSearch {
         matrixAdjacent = new double[list.size()][list.size()]; //distance between every 2 nodes
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < list.size(); j++) {
-                if (i == j)
+                if (i == j) {
                     continue;
-                if (matrixAdjacent[i][j] != 0)
+                }
+                if (matrixAdjacent[i][j] != 0) {
                     continue;
+                }
                 distance = Math.sqrt(Math.pow(list.get(i).xCoordinate - list.get(j).xCoordinate, 2) + Math.pow(list.get(i).yCoordinate - list.get(j).yCoordinate, 2));
                 matrixAdjacent[i][j] = distance;
                 matrixAdjacent[j][i] = distance;
             }
-        }
-    }
-
-    public void displayEdges() {
-        for (int i = 0; i < matrixAdjacent.length; i++) {
-            for (int j = 0; j < matrixAdjacent.length; j++) {
-                System.out.print("[" + matrixAdjacent[i][j] + "]" + " ");
-            }
-            System.out.println();
         }
     }
 
@@ -54,30 +47,14 @@ public class BasicSearch {
         return routeCost;
     }
 
-    public int getUnvisitedVertex(int a) {
-        for (int i = 1; i < customerList.size(); i++) {
-            Customer cus = (Customer) customerList.get(i);
-            if (!cus.wasVisited && matrixAdjacent[a][i] > 0) {
-                return customerList.get(i).ID;
-            }
-        }
-        return -1;
-    }
-
     public boolean allVisited(boolean[][] visitedArray) {
         for (int i = 0; i < visitedArray.length; i++) {
             for (int j = 0; j < visitedArray[0].length; j++) {
                 if (!visitedArray[i][j]) //if some node is not visited yet
+                {
                     return false;
+                }
             }
-        }
-        return true;
-    }
-
-    public boolean completeVisited() {
-        for (int i = 1; i < customerList.size(); i++) {
-            if (!((Customer) customerList.get(i)).wasVisited)
-                return false;
         }
         return true;
     }
@@ -111,8 +88,10 @@ public class BasicSearch {
                 int nodes = 0;
                 double min = Double.POSITIVE_INFINITY;
                 for (int j = 1; j < matrixAdjacent.length; j++) {  //check distance to adjacent node of customer i
-                    if (visited[i][j - 1])  //already visited node in the list.
+                    if (visited[i][j - 1]) //already visited node in the list.
+                    {
                         continue;
+                    }
                     if (matrixAdjacent[lastEle][j] < min && totalSize[i] + customerList.get(j).demandSize <= depot.maximumCapacity) { //of the cost and demand size is lesser
                         min = matrixAdjacent[lastEle][j];  //update the route cost with cheapest cost
                         nodes = j; //update the node ID

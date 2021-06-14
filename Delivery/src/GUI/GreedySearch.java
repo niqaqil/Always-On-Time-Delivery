@@ -3,6 +3,7 @@ package GUI;
 import java.util.ArrayList;
 
 public class GreedySearch {
+
     private static ArrayList<int[]> GRoute;  // save arrays of routes for each vehicles uses
     private static ArrayList<Double> cost;  // save cost for each vehicles uses
     private static ArrayList<Integer> capacity;  // save demand for each vehicles uses
@@ -28,10 +29,11 @@ public class GreedySearch {
     }
 
     public boolean allVisited(boolean[] visited) {  // check if all places had been visited
-        for (boolean b : visited) 
+        for (boolean b : visited) {
             if (!b) {  // if there a place not visited yet, return false
                 return false;
             }
+        }
         return true;  // return true if all places had been visited
     }
 
@@ -39,24 +41,28 @@ public class GreedySearch {
         double min = Integer.MAX_VALUE;
         int index = 0;
         for (int i = 0; i < cus.getSize(); i++) {
-            if (i != parent)
+            if (i != parent) {
                 if (cus.getEdgeCost(parent, i) < min && !visit[i]) {
                     min = cus.getEdgeCost(parent, i);
                     index = i;
                 }
+            }
         }
         return index;
     }
 
-    public double vehicleRoute(Customer<Integer, Integer> cus, Vehicle car, ArrayList<Integer> visitVertex) {  
+    public double vehicleRoute(Customer<Integer, Integer> cus, Vehicle car, ArrayList<Integer> visitVertex) {
         int totalDemand = 0;
         double totalCost = 0;
         boolean[] visited = new boolean[cus.getSize()];
         int parent = 0;
-        if (!visitVertex.contains(parent))
+        if (!visitVertex.contains(parent)) {
             visitVertex.add(parent);
+        }
         visited[parent] = true;
-        for (Integer vertex : visitVertex) visited[vertex] = true;
+        for (Integer vertex : visitVertex) {
+            visited[vertex] = true;
+        }
         ArrayList<Integer> route = new ArrayList<Integer>();
         route.add(parent);
         int nextVertex = -1;
@@ -67,8 +73,9 @@ public class GreedySearch {
                 nextVertex = shortPath(parent, cus, visited);
                 visited[nextVertex] = true;
             }
-            if (!visitVertex.contains(nextVertex))
+            if (!visitVertex.contains(nextVertex)) {
                 visitVertex.add(nextVertex);
+            }
             route.add(nextVertex);
             totalDemand += cus.getDemand(nextVertex);
             totalCost += cus.getEdgeCost(parent, nextVertex);
@@ -107,8 +114,9 @@ public class GreedySearch {
             System.out.println("Vehicle " + (i + 1));
             for (int j = 0; j < GRoute.get(i).length; j++) {
                 System.out.print(GRoute.get(i)[j]);
-                if (j != GRoute.get(i).length - 1)
+                if (j != GRoute.get(i).length - 1) {
                     System.out.print(" -> ");
+                }
             }
             System.out.println("\nCapacity: " + capacity.get(i));
             System.out.println("Cost: " + cost.get(i));
@@ -123,8 +131,9 @@ public class GreedySearch {
             s += "Vehicle " + (i + 1) + "\n";
             for (int j = 0; j < GRoute.get(i).length; j++) {
                 s += GRoute.get(i)[j];
-                if (j != GRoute.get(i).length - 1)
+                if (j != GRoute.get(i).length - 1) {
                     s += " -> ";
+                }
             }
             s += "\nCapacity: " + capacity.get(i) + "\n";
             s += "Cost: " + cost.get(i) + "\n";

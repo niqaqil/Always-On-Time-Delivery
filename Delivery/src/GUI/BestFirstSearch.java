@@ -1,8 +1,6 @@
 package GUI;
 
 import java.util.ArrayList;
-import java.util.TreeSet;
-import java.util.Set;
 
 public class BestFirstSearch {
 
@@ -16,20 +14,18 @@ public class BestFirstSearch {
         routeCapacities = new ArrayList<>();
     }
 
-    public void searchRoute(Customer<Integer, Integer> cus, Vehicle car) {
+    public void searchRoute(InputData data, Customer<Integer, Integer> cus, Vehicle car) {
 
-        int numberOfCustomers = cus.getSize() - 1;
-        //int vehicleMaxCapacity = data.getC();
-        int vehicleMaxCapacity = car.getCapacity();
-        int[][] coordinatesArray = new int[cus.getSize()][2];
+        int numberOfCustomers = data.getN() - 1;
+        numberOfCustomers = cus.getSize() - 1;
+        int vehicleMaxCapacity = data.getC();
+        vehicleMaxCapacity = car.getCapacity();
+        int[][] coordinatesArray = data.getCoordinate();
         int[] demandArray = new int[cus.getSize()];
         for (int i = 0; i < demandArray.length; i++) {
             demandArray[i] = cus.getDemand(i);
-            coordinatesArray[i][0] = cus.getX(i);
-            coordinatesArray[i][1] = cus.getY(i);
         }
-            
-        Set<Integer> visitedPlaces = new TreeSet<>();
+        ArrayList<Integer> visitedPlaces = new ArrayList<>();
         visitedPlaces.add(0);
         int selectedNode = 0;
         int remainingCapacity = vehicleMaxCapacity;
@@ -132,7 +128,7 @@ public class BestFirstSearch {
         }
         output.append("Tour Cost: " + tourCost + "\n");
         for (int i = 0; i < paths.size(); i++) {
-            output.append("Vehicle " + (i + 1) + "\n");
+            output.append("vehicle " + (i + 1) + "\n");
             output.append("Capacity: " + routeCapacities.get(i) + "\n");
             ArrayList<Integer> path = paths.get(i);
             for (Integer node : path) {

@@ -3,6 +3,7 @@ package GUI;
 public class Customer<T extends Comparable<T>, N extends Comparable<N>> {
 
     private class Vertex<T extends Comparable<T>, N extends Comparable<N>> {
+
         T vertexInfo;
         int indeg;
         int outdeg;
@@ -31,6 +32,7 @@ public class Customer<T extends Comparable<T>, N extends Comparable<N>> {
     }
 
     private class Edge<T extends Comparable<T>, N extends Comparable<N>> {
+
         Vertex<T, N> toVertex;
         double weight;
         Edge<T, N> nextEdge;
@@ -50,7 +52,7 @@ public class Customer<T extends Comparable<T>, N extends Comparable<N>> {
 
     Vertex<T, N> head;
     private int size;
-    
+
     // this for bfs
     protected int xCoordinate;
     protected int yCoordinate;
@@ -78,12 +80,14 @@ public class Customer<T extends Comparable<T>, N extends Comparable<N>> {
     }
 
     public boolean hasCustomer(T v) { // is this customer in the graph?
-        if (head == null)
+        if (head == null) {
             return false;
+        }
         Vertex<T, N> temp = head;
         while (temp != null) {
-            if (temp.vertexInfo.compareTo(v) == 0)
+            if (temp.vertexInfo.compareTo(v) == 0) {
                 return true;
+            }
             temp = temp.nextVertex;
         }
         return false;
@@ -93,9 +97,10 @@ public class Customer<T extends Comparable<T>, N extends Comparable<N>> {
         if (hasCustomer(v) == false) {  // The customer is not in the graph
             Vertex<T, N> temp = head;
             Vertex<T, N> newVertex = new Vertex<>(v, null, X, Y, d);
-            if (head == null)  // Graph is empty, Point head to this vertex
+            if (head == null) // Graph is empty, Point head to this vertex
+            {
                 head = newVertex;
-            else {
+            } else {
                 Vertex<T, N> prev = head;
                 while (temp != null) {  // Use prev to move to the last vertex
                     prev = temp;
@@ -105,16 +110,19 @@ public class Customer<T extends Comparable<T>, N extends Comparable<N>> {
             }
             size++;
             return true;
-        } else
+        } else {
             return false;  // Customer is already in the graph
+        }
     }
 
     public int getIndex(T v) {
         Vertex<T, N> temp = head;
         int pos = 0;
         while (temp != null) {  // loop to find the customer
-            if (temp.vertexInfo.compareTo(v) == 0)  // customer is found
+            if (temp.vertexInfo.compareTo(v) == 0) // customer is found
+            {
                 return pos;
+            }
             temp = temp.nextVertex;  // move temp to the next vertex
             pos += 1;
         }
@@ -122,12 +130,15 @@ public class Customer<T extends Comparable<T>, N extends Comparable<N>> {
     }
 
     public boolean addEdge(T source, T destination, double w) {
-        if (head == null)
+        if (head == null) {
             return false;
-        if (!hasCustomer(source) || !hasCustomer(destination))
+        }
+        if (!hasCustomer(source) || !hasCustomer(destination)) {
             return false;
-        if (source == destination)
+        }
+        if (source == destination) {
             return false;
+        }
         Vertex<T, N> sourceVertex = head;
         while (sourceVertex != null) {
             if (sourceVertex.vertexInfo.compareTo(source) == 0) {
@@ -150,57 +161,69 @@ public class Customer<T extends Comparable<T>, N extends Comparable<N>> {
     }
 
     public T getCustomer(int pos) {  // return customer info
-        if (pos > size - 1 || pos < 0)
+        if (pos > size - 1 || pos < 0) {
             return null;
+        }
         Vertex<T, N> temp = head;
-        for (int i = 0; i < pos; i++)
+        for (int i = 0; i < pos; i++) {
             temp = temp.nextVertex;
+        }
         return temp.vertexInfo;
     }
 
     public String getCoordinate(int pos) {  // return a string of coordinate (x, y)
-        if (pos > size - 1 || pos < 0)
+        if (pos > size - 1 || pos < 0) {
             return null;
+        }
         Vertex<T, N> temp = head;
-        for (int i = 0; i < pos; i++)
+        for (int i = 0; i < pos; i++) {
             temp = temp.nextVertex;
+        }
         return " (" + temp.x + ", " + temp.y + ") ";
     }
-    
+
     public int getX(int pos) {
-        if (pos > size - 1 || pos < 0)
+        if (pos > size - 1 || pos < 0) {
             return 0;
+        }
         Vertex<T, N> temp = head;
-        for (int i = 0; i < pos; i++)
+        for (int i = 0; i < pos; i++) {
             temp = temp.nextVertex;
+        }
         return temp.x;
     }
-    
+
     public int getY(int pos) {
-        if (pos > size - 1 || pos < 0)
+        if (pos > size - 1 || pos < 0) {
             return 0;
+        }
         Vertex<T, N> temp = head;
-        for (int i = 0; i < pos; i++)
+        for (int i = 0; i < pos; i++) {
             temp = temp.nextVertex;
+        }
         return temp.y;
     }
 
     public int getDemand(int pos) {  // return demand at each location
-        if (pos > size - 1 || pos < 0)
+        if (pos > size - 1 || pos < 0) {
             return 0;
+        }
         Vertex<T, N> temp = head;
-        for (int i = 0; i < pos; i++)
+        for (int i = 0; i < pos; i++) {
             temp = temp.nextVertex;
+        }
         return temp.demand;
     }
-    
+
     public double calCost(int source, int dest) {  // calculate cost from source to destination
         Vertex<T, N> start = head;
         Vertex<T, N> end = head;
-        for (int i = 0; i < source; i++)
+        for (int i = 0; i < source; i++) {
             start = start.nextVertex;
-        for (int i = 0; i < dest; i++)
+        }
+        for (int i = 0; i < dest; i++) {
             end = end.nextVertex;
+        }
         double sum = Math.pow(start.x - end.x, 2) + Math.pow(start.y - end.y, 2);
         return Math.sqrt(sum);
     }
@@ -222,17 +245,20 @@ public class Customer<T extends Comparable<T>, N extends Comparable<N>> {
 
     public double getEdgeCost(T source, T destination) {
         N notFound = null;
-        if (head == null)
+        if (head == null) {
             return 0;
-        if (!hasCustomer(source) || !hasCustomer(destination))
+        }
+        if (!hasCustomer(source) || !hasCustomer(destination)) {
             return 0;
+        }
         Vertex<T, N> sourceVertex = head;
         while (sourceVertex != null) {
             if (sourceVertex.vertexInfo.compareTo(source) == 0) {
                 Edge<T, N> currentEdge = sourceVertex.firstEdge;
                 while (currentEdge != null) {
-                    if (currentEdge.toVertex.vertexInfo.compareTo(destination) == 0)
+                    if (currentEdge.toVertex.vertexInfo.compareTo(destination) == 0) {
                         return currentEdge.weight;
+                    }
                     currentEdge = currentEdge.nextEdge;
                 }
             }
@@ -240,7 +266,7 @@ public class Customer<T extends Comparable<T>, N extends Comparable<N>> {
         }
         return 0;
     }
-    
+
     public void reset() {
         head = null;
         size = 0;

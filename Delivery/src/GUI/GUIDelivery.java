@@ -1,4 +1,3 @@
-
 package GUI;
 
 import java.awt.Color;
@@ -9,10 +8,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 
-
 public class GUIDelivery extends javax.swing.JFrame {
+
     private JFileChooser file;
     private String s;
+    private InputData data;
     private Customer<Integer, Integer> cus;
     private Vehicle car;
     private int N;
@@ -20,12 +20,10 @@ public class GUIDelivery extends javax.swing.JFrame {
     private int[][] loc;
     private int[] demand;
     private List<Customer> nodeList;
-    
-   
 
     public GUIDelivery() {
         initComponents();
-        
+
         file = new JFileChooser();
         setTitle("Always On Time Delivery");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -37,7 +35,6 @@ public class GUIDelivery extends javax.swing.JFrame {
         Border blackline = BorderFactory.createLineBorder(Color.black);
 
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -92,7 +89,7 @@ public class GUIDelivery extends javax.swing.JFrame {
         });
 
         simulationLabel.setBackground(new java.awt.Color(255, 255, 255));
-        simulationLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        simulationLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         simulationLabel.setText("Simulation:");
         simulationLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         simulationLabel.setMaximumSize(new java.awt.Dimension(70, 20));
@@ -154,16 +151,16 @@ public class GUIDelivery extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "No File choosen");
         }
-        
+
     }//GEN-LAST:event_openFileButtonActionPerformed
 
-    
+
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         // TODO add your handling code here:
         s = filePathText.getText();
         //JOptionPane.showMessageDialog(this, s);
         cus.reset();
-        InputData data = new InputData(s);
+        data = new InputData(s);
         loc = data.getCoordinate();
         demand = data.getDemand();
         N = data.getN();
@@ -184,30 +181,28 @@ public class GUIDelivery extends javax.swing.JFrame {
             if (i == 0) {
                 //System.out.println("Depot" + cus.getCoordinate(i) + ": " + cus.getDemand(i));
                 info += "Depot" + cus.getCoordinate(i) + ": " + cus.getDemand(i) + "\n";
-            }    
-            else {
+            } else {
                 //System.out.println("Customer " + i + cus.getCoordinate(i) + ": "  + cus.getDemand(i));
-                info += "Customer " + i + cus.getCoordinate(i) + ": "  + cus.getDemand(i) + "\n";
-            }               
+                info += "Customer " + i + cus.getCoordinate(i) + ": " + cus.getDemand(i) + "\n";
+            }
         }
         //System.out.println(info);
         //System.out.println("Capacity of vehicle: " + car.getCapacity());
-        
+
         for (int i = 0; i < cus.getSize(); i++) {
             for (int j = 0; j < cus.getSize(); j++) {
                 cus.addEdge(i, j, cus.calCost(i, j));
             }
         }
         simulationLabel.setText(convertToMultiline(info));
-        
+
         selectSimulation.setSelectedIndex(0);
     }//GEN-LAST:event_submitButtonActionPerformed
 
-    
-    
+
     private void selectSimulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectSimulationActionPerformed
         String select = selectSimulation.getItemAt(selectSimulation.getSelectedIndex());
-        switch(select) {
+        switch (select) {
             case "Basic simulation":
                 BasicSearch bfs = new BasicSearch(nodeList);
                 bfs.searchRoute();
@@ -225,13 +220,13 @@ public class GUIDelivery extends javax.swing.JFrame {
                 break;
             case "Best First Search simulation":
                 BestFirstSearch best = new BestFirstSearch();
-                best.searchRoute(cus, car);
+                best.searchRoute(data, cus, car);
                 simulationLabel.setText(convertToMultiline(best.toString()));
                 break;
         }
     }//GEN-LAST:event_selectSimulationActionPerformed
 
-    public static String convertToMultiline(String orig){
+    public static String convertToMultiline(String orig) {
         return "<html>" + orig.replaceAll("\n", "<br>");
     }
 
@@ -280,6 +275,5 @@ public class GUIDelivery extends javax.swing.JFrame {
     private javax.swing.JButton submitButton;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
-
 
 }
